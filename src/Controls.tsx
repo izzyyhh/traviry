@@ -1,38 +1,46 @@
 import { useMap } from "react-leaflet";
+import useLocationStore, { Location } from "./stores/location";
+import {
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarSeparator,
+  MenubarTrigger,
+} from "./components/ui/menubar";
+import { getCurrentPosition } from "./utils";
 
-const Controls: React.FC = () => {
+const Menu: React.FC = () => {
   const map = useMap();
+  const { setLocation } = useLocationStore();
+
+  const moveToCurrentPosition = async (
+    setLocation: (location: Location) => void
+  ) => {
+    const pos = (await getCurrentPosition()) as Location;
+
+    if (map) {
+      map.setView([pos.latitude, pos.longitude], 13);
+    }
+    setLocation(pos);
+  };
 
   return (
-    <button
-      className="btn overmap"
-      onClick={() => {
-        if (!navigator.geolocation) {
-          console.error("Geolocation is not supported by your browser");
-          return;
-        }
-        console.log("geolocatiopn");
-        navigator.permissions.query({ name: "geolocation" }).then((result) => {
-          console.log(result);
-          if (result.state === "granted") {
-            console.log("granted");
-            navigator.geolocation.getCurrentPosition(
-              (position) => {
-                const { latitude, longitude } = position.coords;
-                if (map) map.setView([latitude, longitude], 13);
-              },
-              (error) => {
-                console.error("Error fetching location:", error);
-              }
-            );
-          }
-        });
-        // Get the current position
-      }}
-    >
-      PROVE WORTY
-    </button>
+    <Menubar className="absolute bottom-0 overmap w-fit ">
+      <MenubarMenu>
+        <MenubarTrigger>Controls</MenubarTrigger>
+        <MenubarContent>
+          <MenubarItem onClick={() => moveToCurrentPosition(setLocation)}>
+            New Marker {/* <MenubarShortcut>⌘T</MenubarShortcut> */}
+          </MenubarItem>
+          <MenubarSeparator />
+          <MenubarItem>Current Position</MenubarItem>
+          <MenubarSeparator />
+          <MenubarItem>Share</MenubarItem>
+        </MenubarContent>
+      </MenubarMenu>
+    </Menubar>
   );
 };
 
-export default Controls;
+export default Menu;
