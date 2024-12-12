@@ -1,5 +1,5 @@
 {
-  "name": "travel_diary",
+  "name": "traviry",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@radix-ui/react-menubar": "^1.1.2",
+    "@radix-ui/react-popover": "^1.1.2",
     "axios": "^1.7.8",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
