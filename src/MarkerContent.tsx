@@ -33,6 +33,7 @@ const MarkerContent = ({
   // TODO: think a bout a cool way of adding and displaying photos here
   // also i want to add notes, like little entries to phots or wherever
   // and normal diary text
+  // location is super important should be shown here, where can i fetch it?
   return (
     <Card className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[50%] h-[80%]">
       <div className="relative">
