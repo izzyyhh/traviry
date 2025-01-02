@@ -7,8 +7,8 @@ import path from "path";
 export default defineConfig({
   server: {
     https: {
-      key: fs.readFileSync("./.cert/localhost+2-key.pem"),
-      cert: fs.readFileSync("./.cert/localhost+2.pem"),
+      key: fs.readFileSync("./.cert/key.pem"),
+      cert: fs.readFileSync("./.cert/cert.pem"),
     },
   },
   plugins: [react()],

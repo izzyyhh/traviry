@@ -10,13 +10,23 @@ import PreventLeafletControl from "./PreventLeafletControl";
 const DraggableMarker = ({
   location,
   draggable,
+  description: initialDescription,
+  photo: initialPhoto,
 }: {
   location: { latitude: number; longitude: number };
   draggable: boolean;
 }) => {
-  const [isPopoverOpen, setIsPopoverOpen] = useState(false); // State to control popover visibility
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const [description, setDescription] = useState(initialDescription);
+
+  const handleDescriptionChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setDescription(e.target.value);
+  };
 
   if (!location) return null;
+  // TODO: hovercard would be cool
 
   return (
     <Marker
@@ -37,7 +47,12 @@ const DraggableMarker = ({
             <LayerGroup>
               <div className="absolute bg-white w-screen min-h-72">
                 <div>This is the content of the popover!</div>
-                <button onClick={() => setIsPopoverOpen(false)}>dddd</button>
+                <textarea
+                  placeholder="Add a description"
+                  value={description}
+                  onChange={handleDescriptionChange}
+                />
+                <button onClick={() => setIsPopoverOpen(false)}>Close</button>
               </div>
             </LayerGroup>
           )}
