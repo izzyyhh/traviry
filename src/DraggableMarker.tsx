@@ -6,27 +6,38 @@ import {
   PopoverTrigger,
 } from "./components/ui/popover"; // Using your original import path
 import PreventLeafletControl from "./PreventLeafletControl";
+import MarkerContent from "./MarkerContent";
 
 const DraggableMarker = ({
   location,
   draggable,
+  title: initialTitle,
   description: initialDescription,
-  photo: initialPhoto,
+  onTitleChange,
+  onDescriptionChange,
 }: {
   location: { latitude: number; longitude: number };
   draggable: boolean;
+  title: string;
+  description: string;
+  onTitleChange: (newTitle: string) => void;
+  onDescriptionChange: (newDescription: string) => void;
 }) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const [title, setTitle] = useState(initialTitle);
   const [description, setDescription] = useState(initialDescription);
 
-  const handleDescriptionChange = (
-    e: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
-    setDescription(e.target.value);
+  const handleTitleChange = (newTitle: string) => {
+    setTitle(newTitle);
+    onTitleChange(newTitle);
+  };
+
+  const handleDescriptionChange = (newDescription: string) => {
+    setDescription(newDescription);
+    onDescriptionChange(newDescription);
   };
 
   if (!location) return null;
-  // TODO: hovercard would be cool
 
   return (
     <Marker
@@ -45,15 +56,13 @@ const DraggableMarker = ({
         <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
           {isPopoverOpen && (
             <LayerGroup>
-              <div className="absolute bg-white w-screen min-h-72">
-                <div>This is the content of the popover!</div>
-                <textarea
-                  placeholder="Add a description"
-                  value={description}
-                  onChange={handleDescriptionChange}
-                />
-                <button onClick={() => setIsPopoverOpen(false)}>Close</button>
-              </div>
+              <MarkerContent
+                title={title}
+                description={description}
+                onTitleChange={handleTitleChange}
+                onDescriptionChange={handleDescriptionChange}
+                onClose={() => setIsPopoverOpen(false)}
+              />
             </LayerGroup>
           )}
         </Popover>
